@@ -1,0 +1,9 @@
+/**/*.pyc
+/**/*.pyc
+/**/*.DS_Store
+*.log
+Thumbs.db
+/*.egg-info/
+/build/
+/dist/
+/.venv/

@@ -1,6 +1,47 @@
+# -*- coding: utf-8 -*-
 import os
 import sys
 import numpy
+
+DEFAULT_BASIS_FILENAME = "basis.abitiny"
+
+class Basis(object):
+
+    def __init__(self):
+        """TODO: to be defined1. """
+        self._dimension = 0
+    def __eq__(self, basis):
+        return True if id(self) == id(basis) else False
+    def __mult__(self, other_basis):
+        """
+        Tensor product of the basis
+        """
+        return ProductBasis(self, other_basis)
+    def getDimension(self):
+        return self._dimension
+    def getElementsFunction(self, i):
+        pass
+    def getElementsVector(self, i):
+        pass
+
+class ProductBasis(Basis):
+
+    def __init__(self, basis1, basis2):
+        """TODO: to be defined1. """
+        self.basis1 = basis1
+        self.basis2 = basis2
+        self._dimension = self.basis1.getDimension() * self.basis2.getDimension()
+    def getElement(self, i):
+        counter = 0
+        for i in range(self.basis1.getDimension()):
+            for j in range(self.basis2.getDimension()):
+                counter+=1
+                if counter == i:
+                    state1 = self.basis1.getElement(i)
+                    state2 = self.basis2.getElement(j)
+                    return state1*state2
+
+
 
 class GaussianBasis(object):
 
@@ -32,7 +73,7 @@ class GaussianBasis(object):
     def parseInformation(self):
         pass
 
-class PauliBasis(object):
+class PauliBasis(Basis):
     """
     Basis based on the canonical Pauli matrices
     """
@@ -57,74 +98,24 @@ class PauliBasis(object):
         if not l in self.L:
             raise ValueError("Angular number l = %s is not in the basis, please choose a suitable basis."%(l))
             sys.exit(1)
-    def getDimension(self):
-        return self._dimension
     def getLs(self):
         return self.L
     def getMs(self, l):
         mNumber = int(2*l)
         return [-l+m for m in range(0, mNumber+1)]
-    def getElement(self, l, m):
+    def getElementBySpinNumber(self, l, m):
         self.__check_l(l)
         self.__check_m(l,m)
         elementNumber = self.__get_element_order(l,m)
         vector = numpy.eye(self.getDimension())[elementNumber-1]
-
-
-class Basis(object):
-
-    def __init__(self):
-        """TODO: to be defined1. """
-    def __mult__(self, other_basis):
-        """
-        Tensor product of the basis
-        """
-        pass
-
-
-class State(object):
-
-    def __init__(self):
-        """TODO: to be defined1. """
-        pass
-    def __add__(self, state):
-        pass
-    def __mult__(self, state):
-        """
-        Tensor product
-        """
-    def __mod__(self, state):
-        """
-        Normal product
-        """
-    def __check_basis(self):
-        if not self.getBasis():
-            raise ValueError("The state %s has no basis assigned"%self)
-            sys.exit(1)
-    def setBasis(self, basis):
-        self.basis = basis
-    def getBasis(self):
-        self.__check_basis()
-        return self.basis
-    def getComponents(self):
-        pass
-    def getFunction(self):
-        pass
-
-
-class Spin(State):
-    def __init__(self, l, m):
-        self.l     = l
-        self.m     = m
-        self.basis = None
-    def getComponents(self):
-        return self.getBasis().getElement(self.l, self.m)
-    def getFunction(self):
-        return self.getBasis().getElement(self.l, self.m)
-
-
-class Orbital(State):
-    def __init__(self, parameters=[]):
-        self.parameters      = parameters
-
+    def getElement(self, i):
+        if i>seld.getDimension():
+            raise ValueError("The number of elements in this basis is just %s"%(self.getDimension()))
+            return False
+        counter = 0
+        for l in self.getLs():
+            for m in self.getMs(l):
+                counter+=1
+                if counter == i:
+                    return self.getElementBySpinNumber(l,m)
 

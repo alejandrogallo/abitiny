@@ -19,7 +19,23 @@ class Basis(object):
         """
         return ProductBasis(self, other_basis)
     def parseFile(self):
-        pass
+        from periodic.table import element
+        import re
+        comment_re   = re.compile("\s*!.*")
+        comment_re_2 = re.compile("^\*.*")
+        print("Parsing basis from %s"%self.fileName)
+        fd = open(self.fileName, "r")
+        for line in fd:
+            print(line.replace("\n", ""))
+            match = comment_re.match(line)
+            if match:
+                print("\033[0;31mIgnore\033[0m")
+                continue
+            match = comment_re_2.match(line)
+            if match:
+                print("\033[0;31mIgnore\033[0m")
+                continue
+
     def getDimension(self):
         return self._dimension
     def getElementsFunction(self, i):

@@ -23,7 +23,7 @@ def requireModules(moduleNames=None):
     commentPattern = re.compile(r'^\w*?#')
     moduleNames.extend(
         filter(lambda line: not commentPattern.match(line), 
-            open('requirements.rst').readlines()))
+            open('requirements.txt').readlines()))
 
     return moduleNames
 
@@ -36,7 +36,7 @@ setup(
     url          = "http://github.com/alejandroamsg@gmail.com/abitiny",
 
     description      = 'Tiny and pedagogical implementation of ab initio codes',
-    long_description = open('README.txt').read(),
+    long_description = open('README.rst').read(),
     classifiers      = [
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers'
@@ -44,7 +44,8 @@ setup(
 
     scripts          = [],
     install_requires = requireModules([
-
+        "numpy",
+        "periodic"
     ]),
 
     test_suite = 'abitiny',

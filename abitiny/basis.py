@@ -7,9 +7,10 @@ DEFAULT_BASIS_FILENAME = "basis.abitiny"
 
 class Basis(object):
 
-    def __init__(self):
+    def __init__(self, fileName=DEFAULT_BASIS_FILENAME):
         """TODO: to be defined1. """
         self._dimension = 0
+        self.fileName = fileName
     def __eq__(self, basis):
         return True if id(self) == id(basis) else False
     def __mult__(self, other_basis):
@@ -17,6 +18,8 @@ class Basis(object):
         Tensor product of the basis
         """
         return ProductBasis(self, other_basis)
+    def parseFile(self):
+        pass
     def getDimension(self):
         return self._dimension
     def getElementsFunction(self, i):
